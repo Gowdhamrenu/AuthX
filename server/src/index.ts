@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 import { env } from "./config/env";
 import { connectDatabase } from "./config/database";
@@ -7,9 +8,17 @@ import authRoutes from "./routes/auth.routes";
 
 const app = express();
 
-app.use("/api/auth", authRoutes);
+// Middleware
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
+
 app.use(express.json());
 
+// Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/health", healthRoutes);
 
 const startServer = async () => {
